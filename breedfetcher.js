@@ -1,17 +1,23 @@
-const needle = require('needle');
+const fetchBreedDescription = (breedName, callback) => {
 
-const breedSearch = (breed, url) => {
-  needle.get(url + breed.toLowerCase(), (error, response, body) => {
-    if (error) {
-      console.log('Error:', error);
-      return;
-    } if (!body[0]) {
-      console.log('Breed not found, please check spelling');
+  const url = `https://api.thecatapi.com/v1/breeds/search?q=${breedName}`
+
+  const needle = require('needle');
+  
+  needle.get(url, (error, response) => {
+    if(error) {
+      callback(error)
       return
     }
-    console.log('Response:', response && response.statusCode);
-    console.log(body[0].description);
+    const catData = response.body
+
+    if(catData.length == 0) {
+      callback("Cat breed not found, please check spelling", null)
+    } else {
+      const description = catData[0].description
+      callback(null, description)
+    }
   });
 };
 
-breedSearch('sy', 'https://api.thecatapi.com/v1/breeds/search?q=');
+module.exports = fetchBreedDescription;
