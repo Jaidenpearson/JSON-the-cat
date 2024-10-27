@@ -5,13 +5,13 @@ const breedSearch = (breed, url) => {
     if (error) {
       console.log('Error:', error);
       return;
-    } if (Object.keys(body.length === 0)) {
+    } if (!body[0]) {
       console.log('Breed not found, please check spelling');
-      return;
+      return
     }
     console.log('Response:', response && response.statusCode);
-    console.log(body);
+    console.log(body[0].description);
   });
 };
 
-breedSearch('asd', 'https://api.thecatapi.com/v1/breeds/search?q=');
+breedSearch('sy', 'https://api.thecatapi.com/v1/breeds/search?q=');
